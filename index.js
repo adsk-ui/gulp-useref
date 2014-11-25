@@ -3,14 +3,15 @@ var gutil = require('gulp-util'),
     through = require('through2'),
     useref = require('node-useref');
 
-module.exports = function () {
+module.exports = function (options) {
+    options = options || {};
     return through.obj(function (file, enc, cb) {
         if (file.isStream()) {
             this.emit('error', new gutil.PluginError('gulp-useref', 'Streaming not supported'));
             return cb();
         }
 
-        var output = useref(file.contents.toString());
+        var output = useref(file.contents.toString(), options);
         var html = output[0];
 
         try {
